@@ -106,59 +106,105 @@ const Quizz =[
     }
 ];
 
-let currentQuestion = 0;
-let score = 0;
-let userAnswers =  [];
 
-function showQuestion(index) {
+  
+  let currentQuestion = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = 20;
+  
+  function showQuestion(index) {
+    clearInterval(timer);
+    timeLeft = 20;
+    startTimer();
+  
     const container = document.getElementById("quiz-container");
     container.innerHTML = "";
-
     const q = Quizz[index];
     const div = document.createElement("div");
     div.className = "question";
-    div.innerHTML = "<p>" + (index + 1) + ". " + q.question + "<p>";
-
-    q.choices.forEach(function(choice, i){
-        div.innerHTML += '<label><input type="radio" name="question" value="' + i +'">' + choice + '</label><br>';
+    div.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+  
+    q.choices.forEach((choice, i) => {
+      const label = document.createElement("label");
+      label.innerHTML = `
+        <input type="radio" name="question" value="${i}">
+        ${choice}
+      `;
+      div.appendChild(label);
     });
-
+  
     container.appendChild(div);
-
-    document.getElementById("next-btn").innerText = index === Quizz.length - 1 ?
-    "Terminer" : "Suivant";
-}
-
-function nextQuestion() {
+  
+    document.getElementById("next-btn").disabled = true;
+    document.querySelectorAll('input[name="question"]').forEach(input => {
+      input.addEventListener("change", () => {
+        showCorrection();
+        document.getElementById("next-btn").disabled = false;
+        clearInterval(timer);
+      });
+    });
+  
+    document.getElementById("next-btn").innerText =
+      index === Quizz.length - 1 ? "Terminer" : "Suivant";
+  }
+  
+  function showCorrection() {
     const selected = document.querySelector('input[name="question"]:checked');
-    if (!selected) {
-        alert("Veuillez choisir une réponse avant de continuer!");
-
-    return;
+    const labels = document.querySelectorAll("label");
+    const correctIndex = Quizz[currentQuestion].correct;
+  
+    labels.forEach((label, i) => {
+      if (i === correctIndex) label.classList.add("correct");
+      else if (parseInt(selected.value) === i) label.classList.add("wrong");
+    });
+  
+    if (parseInt(selected.value) === correctIndex) {
+      score++;
     }
-    
-userAnswers[currentQuestion] = parseInt(selected.value);
-    if(userAnswers[currentQuestion] === Quizz[currentQuestion].correct) {
-        score++
-    }
-
+  }
+  
+  function nextQuestion() {
     currentQuestion++;
-    if (currentQuestion <Quizz.length) {
-        showQuestion(currentQuestion);
+    if (currentQuestion < Quizz.length) {
+      showQuestion(currentQuestion);
     } else {
-        showResult();
+      showResult();
     }
-}
-
-    function showResult() {
-        document.getElementById("quiz-container").innerHTML = "";
-
-        document.getElementById("next-btn").style.display = "none";
-
-        document.getElementById("result").innerText = "Quiz terminé ! Votre score : " + score + "/" + Quizz.length;
-    }
-
-    window.onload = function() {
-        showQuestion(currentQuestion);
-    }
-
+  }
+  
+  function showResult() {
+    clearInterval(timer);
+    document.getElementById("quiz-container").innerHTML = "";
+    document.getElementById("next-btn").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    document.getElementById("result").innerText = "Quiz terminé ! Votre score : " + score + "/" + Quizz.length;
+    document.getElementById("restart-btn").style.display = "inline-block";
+  }
+  
+  function restartQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    document.getElementById("next-btn").style.display = "inline-block";
+    document.getElementById("restart-btn").style.display = "none";
+    document.getElementById("result").innerText = "";
+    document.getElementById("timer").style.display = "block";
+    showQuestion(currentQuestion);
+  }
+  
+  function startTimer() {
+    document.getElementById("timer").innerText = `Temps : ${timeLeft}s`;
+    timer = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer").innerText = `Temps : ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        document.getElementById("next-btn").disabled = false;
+        showCorrection();
+      }
+    }, 1000);
+  }
+  
+  showQuestion(currentQuestion);
+ 
+  

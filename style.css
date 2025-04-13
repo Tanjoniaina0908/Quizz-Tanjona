@@ -1,21 +1,120 @@
 
 body {
-    font-family: Arial,sans-serif;
-    margin: 20px;
-    background: linear-gradient(90deg,cyan,magenta,blue,rgb(66, 6, 6),rgb(117, 2, 146));
-}
-
-.question {
-    margin-bottom: 20px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: blue;
+    font-family: 'Segoe UI', sans-serif;
+    background: conic-gradient( #ff0080, #7928ca, blue);
     color: white;
-    border: none;
-    cursor: pointer;
-}
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  #quiz-container {
+  
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: fade 0.5s ease-in-out;
+  }
 
+  @keyframes fade {
+    from {opacity: 0;}
+    to { opacity: 1;}
+  }
+
+  .question p {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  label {
+    display: inline-block;
+    margin: 10px;
+    width: 45%;
+    padding: 12px 10px;
+    border: 2px solid #4facfe;
+    border-radius: 12px;
+    text-align: center;
+    background-color: color-mix(in srgb, sienna 60%, olive 40%);
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  input[type="radio"]{
+    display: none;
+  }
+
+  label:hover {
+    background-color: #d6f0ff;
+  }
+  
+  h1 {
+    margin-bottom: 1rem;
+    color: #09a311;
+  }
+  
+  .question {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  
+  button {
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background-color: #0078d4;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #005a9e;
+  }
+  
+  .correct {
+    background-color: green !important;
+  }
+  
+  .wrong {
+    background-color: red !important;
+  }
+
+  #next-btn, #restart-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 18px;
+    background-color: #00c3ff;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  } 
+
+  #next-btn:hover, #restart-btn:hover {
+    background-color: #008ed8;
+  }
+
+  #result {
+    margin-top: 30px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  #timer {
+    font-size: 18px;
+    margin-top: 15px;
+  }
