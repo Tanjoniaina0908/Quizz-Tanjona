@@ -112,6 +112,17 @@ const Quizz =[
   let score = 0;
   let timer;
   let timeLeft = 20;
+
+  function startQuiz() {
+    document.getElementById("start-screen").style.display = "none";
+
+    document.getElementById("quiz-container").style.display = "block";
+
+    document.getElementById("next-btn").style.display = "inline-block";
+
+    document.getElementById("timer").style.display = "block";
+    showQuestion(currentQuestion)
+  }
   
   function showQuestion(index) {
     clearInterval(timer);
